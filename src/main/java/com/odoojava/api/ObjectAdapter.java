@@ -18,23 +18,15 @@
  */
 package com.odoojava.api;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.TimeZone;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import org.apache.xmlrpc.XmlRpcException;
-
 import com.odoojava.api.Field.FieldType;
 import com.odoojava.api.helpers.FilterHelper;
+import org.apache.xmlrpc.XmlRpcException;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.*;
 
 /**
  * Main class for communicating with the server. It provides extra validation
@@ -95,7 +87,6 @@ public class ObjectAdapter {
 	 * synchronized to make use of a global (static) list of model names to increase
 	 * speed
 	 *
-	 * @param command Command object to use
 	 * @throws OdooApiException If the model could not be validated
 	 */
 	@SuppressWarnings("unchecked")
@@ -1094,5 +1085,16 @@ public class ObjectAdapter {
 		RowCollection rows = new RowCollection();
 		rows.add(row);
 		return this.unlinkObject(rows);
+	}
+
+	/**
+	 * Deletes objects from the Odoo Server
+	 *
+	 * @param id Id of object to delete
+	 * @return If the row was successfully deleted
+	 * @throws XmlRpcException
+	 */
+	public boolean unlinkObject(int id) throws XmlRpcException {
+		return this.command.unlinkObject(this.modelName, new Object[]{id});
 	}
 }
